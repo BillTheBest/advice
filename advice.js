@@ -8,7 +8,7 @@
 
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['underscore.mutation'], function(_) {
+        define(['mutation'], function(_) {
             root.Advice = factory(root, _);
             return root.Advice;
         });

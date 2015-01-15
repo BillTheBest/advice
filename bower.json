@@ -1,0 +1,34 @@
+{
+  "name": "advice",
+  "main": "advice.js",
+  "version": "1.0.0",
+  "moduleType": [
+    "amd",
+    "globals"
+  ],
+  "keywords": [
+    "advice",
+    "mixins",
+    "javascript",
+    "mixin",
+    "aspect",
+    "reuse",
+    "composable"
+  ],
+  "license": "MIT",
+    "devDependencies": {
+        "chai": "1.9.1",
+        "mocha": "1.21.3",
+        "sinonjs": "1.10.2",
+        "chai-jquery": "1.2.2",
+        "sinon-chai": "2.5.0",
+        "backbone": "1.0.0",
+        "requirejs": "2.1.14"
+    },
+  "dependencies"  : {
+    "underscore-mutation"  : "git@git.dataminr.com:frontend-team/underscore-mutation.git"
+  },
+  "ignore"        : ["docs", "examples", "test", "*.html", "*.ico", "*.md"],
+  "homepage": "https://dataminr.github.io/advice",
+  "private": true
+}
