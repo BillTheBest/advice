@@ -52,7 +52,7 @@ module.exports = function(grunt) {
             }
         },
         clean: {
-            docs: ["*", "!doc/*", "!index.html"]
+            docs: ["*", "!doc/*", "!index.html", "!node_modules/*"]
         },
         docker: {
             options: {
@@ -85,5 +85,5 @@ module.exports = function(grunt) {
     ]);
 
     // Creates the `server` task
-    grunt.registerTask('docs', ['shell:install-deps','shell:github-pages-delete','shell:github-pages-checkout','clean:docs','docker:main', 'shell:github-pages-push']);
+    grunt.registerTask('docs', ['shell:install-deps','shell:github-pages-delete','shell:github-pages-checkout','docker:main', 'clean:docs', 'shell:github-pages-push']);
 };
