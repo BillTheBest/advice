@@ -57,12 +57,13 @@ module.exports = function(grunt) {
             docs: {
                 src: docFilePaths,
                 options: {
+                    layout: "parallel"
                 }
             },
             index: {
                 src: 'readme.md',
                 options: {
-                    layout:"classic"
+                    layout:"linear"
                 }
             }
         }
