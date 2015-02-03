@@ -30,12 +30,25 @@ module.exports = function(grunt) {
                 // Gets the port from the connect configuration
                 path: 'http://localhost:<%= connect.all.options.port%>/bin/'
             }
+        },
+        shell: {
+            "github-pages-checkout": {
+                command: 'git checkout gh-pages'
+            },
+            "github-pages-push": {
+                command: 'git commit -A -m "Docs for github"  & git push github'
+            }
+        },
+        clean: {
+            docs: ["*", "!doc/*", "!index.html"]
         }
     });
 
     grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-connect');
+    grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-open');
+    grunt.loadNpmTasks('grunt-shell-spawn');
 
     // Creates the `server` task
     grunt.registerTask('default',[
@@ -45,4 +58,7 @@ module.exports = function(grunt) {
         'open',
         'connect'
     ]);
+
+    // Creates the `server` task
+    grunt.registerTask('docs', ['shell:github-pages-checkout','clean:docs','shell:github-pages-push']);
 };

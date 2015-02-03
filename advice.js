@@ -1,11 +1,19 @@
-// ==========================================
-// Copyright 2015 Dataminr
-// Licensed under The MIT License
-// http://opensource.org/licenses/MIT
-// work derived from https://github.com/twitter/flight/blob/master/lib/advice.js
-// ==========================================
+/**
+ ADVICE
+ ====================
+ */
+/*
+ * @version 0.2
+ *
+ * @fileOverview Based on the Advice functional mixin library by Angus Croll. Adds functional mixins to an object.
+ * Advice offers a number of ways to modify methods and properties on an object.  It makes it possible to reuse code and compose together functionality to create an object behavior.
+ * Copyright 2015 Dataminr
+ * Licensed under The MIT License
+ * http://opensource.org/licenses/MIT
+ * work derived from https://github.com/twitter/flight/blob/master/lib/advice.js
 
-
+ *
+ */
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
         define(['mutation'], function(_) {
