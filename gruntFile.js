@@ -39,10 +39,10 @@ module.exports = function(grunt) {
                 command: "docker advice.js"
             },
             "github-pages-checkout": {
-                command: 'git branch -D gh-pages & git checkout -b gh-pages & git checkout gh-pages'
+                command: 'git branch -D gh-pages & git checkout -b gh-pages'
             },
             "github-pages-push": {
-                command: 'git commit -A -m "Docs for github"  & git push github'
+                command: 'git commit -A -m "Docs for github" & git push github gh-pages'
             }
         },
         clean: {
