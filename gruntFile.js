@@ -3,7 +3,7 @@
 module.exports = function(grunt) {
     var port = '9000';
     var connect = require('./node_modules/grunt-contrib-connect/tasks/connect');
-
+    var docFilePaths = ['advice.js'];
     grunt.initConfig({
 
         karma: {
@@ -32,8 +32,11 @@ module.exports = function(grunt) {
             }
         },
         shell: {
+            "docker": {
+                command: "docker advice.js"
+            },
             "github-pages-checkout": {
-                command: 'git checkout gh-pages'
+                command: 'git branch -D gh-pages & git checkout gh-pages'
             },
             "github-pages-push": {
                 command: 'git commit -A -m "Docs for github"  & git push github'
@@ -41,6 +44,18 @@ module.exports = function(grunt) {
         },
         clean: {
             docs: ["*", "!doc/*", "!index.html"]
+        },
+        docker: {
+            options: {
+                // These options are applied to all tasks
+            },
+            main: {
+                // Specify `src` and `dest` directly on the task object
+                src: docFilePaths,
+                options: {
+                    // ...
+                }
+            }
         }
     });
 
@@ -49,6 +64,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-shell-spawn');
+    grunt.loadNpmTasks('grunt-docker');
 
     // Creates the `server` task
     grunt.registerTask('default',[
@@ -60,5 +76,5 @@ module.exports = function(grunt) {
     ]);
 
     // Creates the `server` task
-    grunt.registerTask('docs', ['shell:github-pages-checkout','clean:docs','shell:github-pages-push']);
+    grunt.registerTask('docs', ['shell:github-pages-checkout','clean:docs','docker:main', 'shell:github-pages-push']);
 };
