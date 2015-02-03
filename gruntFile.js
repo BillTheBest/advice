@@ -35,12 +35,6 @@ module.exports = function(grunt) {
             "install-deps": {
                 command: 'npm install'
             },
-            "generate-docs": {
-                command: docFilepaths.map(function(val, ind) {
-                    return 'docco ' + val
-                }).concat(['docco readme.md -l classic'])
-                .join('&&')
-            },
             "github-pages-delete": {
                 command: 'hasPages=`git branch --list gh-pages`; if [ -n "$hasPages" ]; then git branch -D gh-pages; else echo boo; fi'
             },
