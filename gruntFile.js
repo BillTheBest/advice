@@ -33,16 +33,22 @@ module.exports = function(grunt) {
         },
         shell: {
             "install-deps": {
-                command: "npm install"
+                command: 'npm install'
             },
             "docker": {
-                command: "docker advice.js"
+                command: 'docker advice.js'
+            },
+            "github-pages-delete": {
+                command: 'hasPages=`git branch --list gh-pages`; if [ -n "$hasPages" ]; then git branch -D gh-pages; else echo boo; fi'
             },
             "github-pages-checkout": {
-                command: 'git branch -D gh-pages & git checkout -b gh-pages'
+                command: 'git checkout -b gh-pages'
             },
             "github-pages-push": {
-                command: 'git commit -A -m "Docs for github" & git push github gh-pages'
+                command: [
+                    'git commit -A -m "Docs for github"',
+                    'git push github gh-pages'
+                ].join('&&')
             }
         },
         clean: {
@@ -79,5 +85,5 @@ module.exports = function(grunt) {
     ]);
 
     // Creates the `server` task
-    grunt.registerTask('docs', ['shell:install-deps','shell:github-pages-checkout','clean:docs','docker:main', 'shell:github-pages-push']);
+    grunt.registerTask('docs', ['shell:install-deps','shell:github-pages-delete','shell:github-pages-checkout','clean:docs','docker:main', 'shell:github-pages-push']);
 };
