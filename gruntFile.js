@@ -46,7 +46,7 @@ module.exports = function(grunt) {
             },
             "github-pages-push": {
                 command: [
-                    'git commit -A -m "Docs for github"',
+                    'git commit -a -m "Docs for github"',
                     'git push github gh-pages'
                 ].join('&&')
             }
