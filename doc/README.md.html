@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>README.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = "README.md", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+      <div class="heading h1">
+        <a href="#advice">Advice</a>
+      </div>
+      <div class="heading h2">
+        <a href="#usage">Usage</a>
+      </div>
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="docs markdown">
+<div class="pilwrap" id="advice">
+  <h1>
+    <a href="#advice" name="advice" class="pilcrow">&#182;</a>
+    Advice
+  </h1>
+</div>
+
+
+<p>Based on the Advice functional mixin library by Angus Croll. Adds functional mixins to an object.
+Advice offers a number of ways to modify methods and properties on an object.  It makes it possible to reuse code and compose together functionality to create an object behavior.</p>
+
+
+<div class="pilwrap" id="usage">
+  <h2>
+    <a href="#usage" name="usage" class="pilcrow">&#182;</a>
+    Usage
+  </h2>
+</div>
+
+
+<p>You can add advice to any object. A simple example might be adding logging functionality to your views in an application.</p>
+
+
+<div class="highlight"><pre><code><span class="nx">Advice</span><span class="p">.</span><span class="nx">addAdvice</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">View</span><span class="p">);</span>
+</code></pre></div>
+
+
+
+<p>where MyApp.View is the view constructor in your framework.</p>
+
+<p>Lets say MyApp.View has a clickHandler method that is called when it is clicked . You can then do the following using advice:</p>
+
+
+<div class="highlight"><pre><code><span class="nx">MyApp</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">after</span><span class="p">({</span>
+    <span class="nx">clickHandler</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="s1">&#39; was clicked&#39;</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">})</span>
+</code></pre></div>
+
+
+
+<p>Now any time an instance of MyApp.View is clicked it will log the event to the console. This is very useful for situations where you want to reuse a piece of common functionality across objects. </p>
+
+<p>Lets try doing the same thing with a <strong>"mixin"</strong> which is essentially a function that is called in the scope of the target object.  Since the target object already has the advice methods added to it, one just has to call the desired advice in the <em>this</em> context.</p>
+
+<p>Here's a list of the available methods that are added onto an object using <strong>.addAdvice(targetObject)</strong>:</p>
+
+<p>| Type      |  Behavior  |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| before    | Adds on the supplied method to be called before the original method(s) run |
+| after       |  Adds on the supplied method to be called after the original method(s) have run |
+| clobber   |  Overwrites the original properties of an object |
+| around    |  Adds on the supplied method instead of the super method, but passes a reference to the original method as the first argument followed by the arguments the method was called with |
+| addToObj | Extends the keys of an object with the keys of the provided object |
+| setDefaults | Adds properties (methods, objects, etc) to the constructor if they don't already exist |
+| mixin | Pass an array of mixins that should be mixed in to the target object |</p>
+
+
+<div class="highlight"><pre><code><span class="c1">// Add advice to the views in our framework</span>
+<span class="nx">Advice</span><span class="p">.</span><span class="nx">addAdvice</span><span class="p">(</span><span class="nx">MyApp</span><span class="p">.</span><span class="nx">View</span><span class="p">);</span>
+
+<span class="c1">// Define our logging mixin</span>
+<span class="kd">var</span> <span class="nx">loggingMixin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">({</span>
+        <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">logger</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Initialized &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">)</span> <span class="c1">// Log initialized view</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">};</span>
+<span class="kd">var</span> <span class="nx">myViewClass1</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;view1&#39;</span>
+<span class="p">});</span>
+<span class="kd">var</span> <span class="nx">myViewClass2</span> <span class="o">=</span> <span class="nx">MyApp</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;view2&#39;</span>
+<span class="p">});</span>
+<span class="c1">// Apply the mixin to the desired views</span>
+<span class="nx">myViewClass1</span><span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">loggingMixin</span><span class="p">);</span> <span class="c1">// Add logging to myViewClass1</span>
+
+<span class="c1">// Instantiate the views</span>
+<span class="kd">var</span> <span class="nx">view1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">myViewClass1</span><span class="p">();</span> <span class="c1">// Logs &quot;Initialized view1&quot;</span>
+<span class="kd">var</span> <span class="nx">view2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">myViewClass2</span><span class="p">();</span> <span class="c1">// Doesn&#39;t log anything</span>
+</code></pre></div>
+
+
+
+<p>Lets take a more complex example using the Backbone framework.</p>
+
+
+<div class="highlight"><pre><code><span class="c1">// add the mixin capability (may already be done for you)</span>
+<span class="nx">Advice</span><span class="p">.</span><span class="nx">addAdvice</span><span class="p">(</span><span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">)</span>
+
+<span class="c1">// define a mixin</span>
+<span class="kd">var</span> <span class="nx">namer</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// options an object that may be passed in</span>
+
+    <span class="c1">// any functions under clobber will be replaced</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">clobber</span><span class="p">({</span>
+        <span class="nx">initialize</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">spoke</span> <span class="o">=</span> <span class="nx">options</span><span class="p">.</span><span class="nx">times</span> <span class="o">||</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="c1">// these will only be set if there is no existing function</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">setDefaults</span><span class="p">({</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;frank&#39;</span><span class="p">,</span>
+        <span class="nx">getName</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">;</span>
+        <span class="p">},</span>
+        <span class="nx">speak</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;hello &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">getName</span><span class="p">());</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="c1">// first argument will be the original function - can also take an object of functions</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">around</span><span class="p">(</span><span class="s1">&#39;getName&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">orig</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">orig</span><span class="p">().</span><span class="nx">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">];</span>
+    <span class="p">});</span>
+
+    <span class="c1">// can even extend objects - useful for adding events</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">addToObj</span><span class="p">({</span>
+        <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">&#39;greeted&#39;</span> <span class="o">:</span><span class="s1">&#39;speak&#39;</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+
+    <span class="c1">// first argument will be the original function - can also take an object of functions</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">before</span><span class="p">(</span><span class="s1">&#39;speak&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">spoke</span><span class="o">++</span><span class="p">;</span>
+    <span class="p">});</span>
+
+    <span class="c1">// first argument will be the original function - can also take an object of functions</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">(</span><span class="s1">&#39;speak&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;for the &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">spoke</span> <span class="o">+</span> <span class="s1">&#39;th time&#39;</span><span class="p">);</span>
+    <span class="p">});</span>
+
+<span class="p">}</span>
+
+
+<span class="kd">var</span> <span class="nx">Speaker</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+    <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Bob White&#39;</span> <span class="c1">// the set defaults won&#39;t override this</span>
+<span class="p">}).</span><span class="nx">mixin</span><span class="p">([</span>
+    <span class="nx">namer</span>
+<span class="p">],</span> <span class="p">{</span> <span class="c1">// options passed in</span>
+    <span class="nx">times</span><span class="o">:</span> <span class="mi">3</span>
+<span class="p">});</span>
+
+<span class="kd">var</span> <span class="nx">bob</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Speaker</span><span class="p">();</span>
+<span class="nx">bob</span><span class="p">.</span><span class="nx">speak</span><span class="p">();</span>  <span class="c1">// Hello Bob</span>
+              <span class="c1">// for the 4th time</span>
+</code></pre></div>
+
+
+
+<p>You can even call addToObj, clobber, setDefaults, after, before and around straight on the constructor rather than creating the mixin function:</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">ShoutName</span> <span class="o">=</span> <span class="nx">Speaker</span><span class="p">.</span><span class="nx">extend</span><span class="p">().</span><span class="nx">around</span><span class="p">(</span><span class="s1">&#39;getName&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">orig</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">orig</span><span class="p">().</span><span class="nx">toUpperCase</span><span class="p">();</span>
+<span class="p">});</span>
+</code></pre></div>
+
+
+
+<p>We can also setup a sort of pseudo inheritance between mixins, say we wanted the previous example to work on it's own we could do this:</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">shouter</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="c1">// pull in any other mixins this one depends on</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">mixin</span><span class="p">([</span>
+        <span class="nx">namer</span>
+    <span class="p">],</span> <span class="nx">options</span><span class="p">);</span>
+
+    <span class="c1">// now we can decorate</span>
+    <span class="k">this</span><span class="p">.</span><span class="nx">around</span><span class="p">(</span><span class="s1">&#39;getName&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">orig</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="nx">orig</span><span class="p">().</span><span class="nx">toUpperCase</span><span class="p">();</span>
+    <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">ShoutName</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">().</span><span class="nx">mixin</span><span class="p">([</span>
+    <span class="nx">shouter</span>
+<span class="p">]);</span>
+</code></pre></div>
+
+
+
+<p>Mixins will keep a record of what has been put on, so a mixin will only be applied once (this may cause issues if you'd like to re-apply a mixin with a different set of options).</p>
+
+<p>notice that we're extending before the mixin to get the right prototype chain before mixing in.</p>
+
+<p>Mixins can also be objects like this:</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">myMixin</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="nx">clobber</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">clobbered</span><span class="o">:</span> <span class="kc">true</span><span class="p">;</span>
+    <span class="p">},</span>
+    <span class="nx">addToObj</span><span class="o">:</span> <span class="p">{</span>
+        <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+            <span class="s1">&#39;click&#39;</span><span class="o">:</span> <span class="s1">&#39;onClick&#39;</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="nx">after</span><span class="o">:</span> <span class="p">{</span>
+        <span class="s1">&#39;render&#39;</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;rendering done&#39;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div>
+
+
+
+<p>Be careful though, only mixins that were defined as functions are able to see if they have been applied before. To fix this you can return the object from a function:</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">myMixinFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">myMixin</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+
+
+<p>or even use the return method to pass in the options object:</p>
+
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">myMixinFn</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nx">setDefaults</span><span class="o">:</span> <span class="p">{</span>
+            <span class="nx">number</span><span class="o">:</span> <span class="nx">options</span><span class="p">.</span><span class="nx">number</span>
+        <span class="p">}</span>
+    <span class="p">};</span>
+<span class="p">}</span>
+</code></pre></div>
+
+</div>
+  </div>
+</body>
+</html>

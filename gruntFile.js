@@ -35,8 +35,11 @@ module.exports = function(grunt) {
             "install-deps": {
                 command: 'npm install'
             },
-            "docker": {
-                command: 'docker advice.js'
+            "generate-docs": {
+                command: docFilepaths.map(function(val, ind) {
+                    return 'docco ' + val
+                }).concat(['docco readme.md -l classic'])
+                .join('&&')
             },
             "github-pages-delete": {
                 command: 'hasPages=`git branch --list gh-pages`; if [ -n "$hasPages" ]; then git branch -D gh-pages; else echo boo; fi'
@@ -44,9 +47,11 @@ module.exports = function(grunt) {
             "github-pages-checkout": {
                 command: 'git checkout -b gh-pages'
             },
+            "github-pages-commit": {
+                command: 'git commit -a -m "Docs for github"'
+            },
             "github-pages-push": {
                 command: [
-                    'git commit -a -m "Docs for github"',
                     'git push github gh-pages'
                 ].join('&&')
             }
@@ -54,15 +59,16 @@ module.exports = function(grunt) {
         clean: {
             docs: ["*", "!doc", "!doc/*", "!index.html", "!node_modules","!node_modules/*"]
         },
-        docker: {
-            options: {
-                // These options are applied to all tasks
-            },
-            main: {
-                // Specify `src` and `dest` directly on the task object
+        docco: {
+            docs: {
                 src: docFilePaths,
                 options: {
-                    // ...
+                }
+            },
+            index: {
+                src: 'readme.md',
+                options: {
+                    layout:"classic"
                 }
             }
         }
@@ -73,7 +79,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-open');
     grunt.loadNpmTasks('grunt-shell-spawn');
-    grunt.loadNpmTasks('grunt-docker');
+    grunt.loadNpmTasks('grunt-docco3');
 
     // Creates the `server` task
     grunt.registerTask('default',[
@@ -85,5 +91,5 @@ module.exports = function(grunt) {
     ]);
 
     // Creates the `server` task
-    grunt.registerTask('docs', ['shell:install-deps','shell:github-pages-delete','shell:github-pages-checkout','docker:main', 'clean:docs', 'shell:github-pages-push']);
+    grunt.registerTask('docs', ['shell:install-deps','shell:github-pages-delete','shell:github-pages-checkout', 'docco:docs', 'docco:main', 'clean:docs', 'shell:github-pages-push']);
 };
