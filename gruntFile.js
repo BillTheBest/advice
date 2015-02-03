@@ -52,7 +52,7 @@ module.exports = function(grunt) {
             }
         },
         clean: {
-            docs: ["*", "!doc/*", "!index.html", "!node_modules/*"]
+            docs: ["*", "!doc/*", "!index.html", "!node_modules","!node_modules/*"]
         },
         docker: {
             options: {
