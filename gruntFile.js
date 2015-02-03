@@ -32,6 +32,9 @@ module.exports = function(grunt) {
             }
         },
         shell: {
+            "install-deps": {
+                command: "npm install"
+            },
             "docker": {
                 command: "docker advice.js"
             },
@@ -76,5 +79,5 @@ module.exports = function(grunt) {
     ]);
 
     // Creates the `server` task
-    grunt.registerTask('docs', ['shell:github-pages-checkout','clean:docs','docker:main', 'shell:github-pages-push']);
+    grunt.registerTask('docs', ['install-deps','shell:github-pages-checkout','clean:docs','docker:main', 'shell:github-pages-push']);
 };
