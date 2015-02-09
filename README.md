@@ -4,4 +4,4 @@ Based on the Advice functional mixin library by Angus Croll. Adds functional mix
 Advice offers a number of ways to modify methods and properties on an object. 
 It makes it possible to reuse code and compose together functionality to create an object behavior.
 
-Check out the [website]('index.html') for more information
+Visit the [website]('http://dataminr.github.io/advice') for more information
