@@ -2,7 +2,9 @@
 
 Based on the Advice functional mixin library by Angus Croll. Adds functional mixins to an object.
 Advice offers a number of ways to modify methods and properties on an object.  It makes it possible to reuse code and compose together functionality to create an object behavior.
-
+<div class="test" style="background:black; width: 100%; height: 300px;">
+#Blah
+</div>
 ## Usage ##
 
 You can add advice to any object. A simple example might be adding logging functionality to your views in an application.
