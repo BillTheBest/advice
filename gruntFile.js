@@ -113,6 +113,6 @@ module.exports = function(grunt) {
         'shell:renamemain',
         'shell:github-pages-add',
         'shell:github-pages-commit',
-//        'shell:github-pages-push'
+        'shell:github-pages-push'
     ]);
 };
