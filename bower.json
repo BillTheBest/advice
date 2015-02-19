@@ -26,7 +26,7 @@
         "requirejs": "2.1.14"
     },
   "dependencies"  : {
-    "underscore-mutation"  : "git@git.dataminr.com:frontend-team/underscore-mutation.git"
+    "mutation"  : "git@git.dataminr.com:frontend-team/underscore-mutation.git"
   },
   "ignore"        : ["docs", "examples", "test", "*.html", "*.ico", "*.md"],
   "homepage": "https://dataminr.github.io/advice",

@@ -1,4 +1,8 @@
 /**
+ ADVICE
+ ====================
+ */
+/*
  * @version 0.2
  *
  * @fileOverview Based on the Advice functional mixin library by Angus Croll. Adds functional mixins to an object.
@@ -22,15 +26,7 @@
 }(this, function(root, _) {
 
     /**
-     * #### mixin
-     * This is the 'mixin' function available
-     * on an object with advice added to it.
-     * Takes a mixin or array of mixins and options
-     * Adds the given mixins to the to
-     * on the target object.
-     * @param mixins {function|array} Mixins to be added
-     * @param options {object} (Optional) Options to the mixins
-     * @returns {function}
+     * adds mixins to an object
      */
     var mixInto = function(mixins, options) {
         // used to saved applied mixins
@@ -112,14 +108,7 @@
         return _.contains(mixins, mixin);
     };
     var Advice = {
-        /**
-         * #### around
-         * calls the wrapped function with base function as first argument
-         * on the target object.
-         * @param base {function} Base Function
-         * @param wrapped {function} Wrapped function
-         * @returns {function}
-         */
+        // calls the wrapped function with base functions as first argument
         around: function(base, wrapped) {
             return function() {
                 var args = [].slice.call(arguments, 0);
@@ -127,14 +116,7 @@
             };
         },
 
-        /**
-         * #### before
-         * will call the new function before the old one with same arguments
-         * on the target object.
-         * @param base {function} Base Function
-         * @param before {function} Function to be called before base fn
-         * @returns {function}
-         */
+        // will call the new function before the old one with same arguments
         before: function(base, before) {
             return Advice.around(base, function() {
                 var args = [].slice.call(arguments, 0),
@@ -147,14 +129,7 @@
             });
         },
 
-        /**
-         * #### after
-         * will call the new function after the old one with same arguments
-         * on the target object.
-         * @param base {function} Base Function
-         * @param after {function} Function to be called after base fn
-         * @returns {function}
-         */
+        // will call the new function after the old one with same arguments
         after: function(base, after) {
             return Advice.around(base, function() {
                 var args = [].slice.call(arguments, 0),
@@ -171,13 +146,7 @@
         },
 
         /**
-         * #### clobber
-         * Extend an object with a key-value pair or another object.
-         * on the target object.
-         * @param base {object|function} Base Object
-         * @param key {string|object} Either key to extend or an object to extend with
-         * @param value {object} (Optional) value to associate with key in base
-         * @returns {object|function}
+         * if it exists then overwrite
          */
         clobber: function(base, key, value) {
             var extBase = base;
@@ -193,13 +162,7 @@
         },
 
         /**
-         * #### addToObj
-         * will extend all key-values in a base object,
-         * given another objects key-values (good for 'events')
-         * on the target object.
-         * @param base {object|function} Base Object
-         * @param obj {object} Object used to extend key-values of base
-         * @returns {object|function}
+         * will add values to an existing object (good for 'events')
          */
         addToObj: function(base, obj) {
             var extBase = base;
@@ -212,12 +175,7 @@
         },
 
         /**
-         * #### setDefaults
-         * Acts like a guarded extend. Will only set the given key-values
-         * on the base if they don't already exist
-         * @param base {object} Base Object
-         * @param obj {object} Object used to set key-values on base
-         * @returns {object}
+         * will set only if doesn't exist
          */
         setDefaults: function(base, obj) {
             var extBase = base;
@@ -231,11 +189,7 @@
         },
 
         /**
-         * #### findVal
-         *  find a value in a prototype chain
-         * @param obj {function} Object to look in
-         * @param name {object} name of the property to look for
-         * @returns {*}
+         * find a value in a prototype chain
          */
         findVal: function(obj, name) {
             while (!obj[name] && obj.prototype)
@@ -244,10 +198,7 @@
         },
 
         /**
-         * #### addAdvice
          * adds advice functions to an object
-         * @param obj {object} Object to add advice methods to
-         * @returns {undefined}
          */
         addAdvice: function(obj) {
             // adds before, after and around

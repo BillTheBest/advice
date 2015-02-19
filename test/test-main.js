@@ -63,7 +63,8 @@ require.config({
         sinon: 'bower_components/sinonjs/sinon',
         "lodash": 'bower_components/lodash/dist/lodash',
         "underscore": 'bower_components/lodash/dist/lodash',
-        "mutation": 'bower_components/underscore-mutation/mutation',
+        "mutation": 'bower_components/mutation/mutation',
+        "lodash.mutation": 'bower_components/mutation/lodash.mutation',
     },
     shim: {
         'underscore': {

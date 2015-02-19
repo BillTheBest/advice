@@ -3,7 +3,9 @@
 module.exports = function(grunt) {
     var port = '9000';
     var connect = require('./node_modules/grunt-contrib-connect/tasks/connect');
-    var docFilePaths = ['advice.js'];
+    var sourceFilePaths = ['advice.js'];
+    var docFilePaths = ['index.md', 'examples/example1.md','examples/example2.md','examples/example3.md'];
+
     grunt.initConfig({
 
         karma: {
@@ -33,7 +35,7 @@ module.exports = function(grunt) {
         },
         shell: {
             "install-deps": {
-                command: 'npm install'
+                command: 'npm install && bower install'
             },
             "github-pages-delete": {
                 command: 'hasPages=`git branch --list gh-pages`; if [ -n "$hasPages" ]; then git branch -D gh-pages; else echo boo; fi'
@@ -63,7 +65,11 @@ module.exports = function(grunt) {
             rest: ["*",
                 "!doc",
                 "!node_modules",
-                "!maindocs"]
+                "!bower_components",
+                "!demos",
+                "!maindocs"].concat(sourceFilePaths.map(function(val) {
+                    return '!' + val;
+                }))
         },
         docker: {
             options: {
@@ -72,14 +78,14 @@ module.exports = function(grunt) {
             },
             docs: {
                 // Specify `src` and `dest` directly on the task object
-                src: docFilePaths,
+                src: sourceFilePaths,
                 dest: 'doc'
             },
             maindocs: {
-                src: ['index.md'],
+                src: docFilePaths,
                 dest: 'maindocs',
                 options: {
-                    sidebarState: false
+                    sidebarState: true
                 }
             }
         }

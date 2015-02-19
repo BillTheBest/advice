@@ -1,0 +1,62 @@
+<html>
+<head>
+    <script src="lib/jquery.js" type="text/javascript"></script>
+    <script src="lib/underscore.js" type="text/javascript"></script>
+    <script src="lib/backbone.js" type="text/javascript"></script>
+    <script src="../advice.js" type="text/javascript"></script>
+</head>
+<body>
+<button id="btn1"></button>
+<script type="text/javascript">
+    // Add advice to the views in our framework
+    Advice.addAdvice(Backbone.View);
+
+    // Define our click mixin
+    var loggingMixin = function(options) {
+        this.addToObj({
+            events: {
+                "click": "clickHandler"
+            }
+        });
+        this.after({
+            clickHandler: function() {
+                alert(this.name + ' was clicked');
+            }
+        })
+    };
+    // Define our logging mixin
+    var clickMixin = function(options) {
+        this.after({
+            clickHandler: function() {
+                alert(this.name + ' was logged');
+            }
+        })
+    };
+    var Buttons1 = Backbone.View.extend({
+        tagName: 'button',
+        name: 'Button 1',
+        render: function() {
+            this.$el.html('button 1');
+            return this;
+        }
+    })
+    .mixin([clickMixin, loggingMixin]);
+
+    var Buttons2 = Backbone.View.extend({
+        tagName: 'button',
+        template: 'Button 2',
+        name: 'Button 2',
+        render: function() {
+            this.$el.html('button 1');
+            return this;
+        }
+    })
+    .mixin(clickMixin);
+
+    var btn1 = new Buttons1();
+    var btn2 = new Buttons2();
+    $(document.body).append(btn1.render().el);
+    $(document.body).append(btn2.render().el);
+</script>
+</body>
+</html>
