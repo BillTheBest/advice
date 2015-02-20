@@ -6,7 +6,7 @@
 	Whereas the second button has only the clicking functionality.
 	In this way, we can use mixins to selectively add functionality.
 </div>
-<iframe src="../demos/demo2.html" class="demo-frame" style="display:inline-block;"></iframe>
+<iframe src="../resources/demos/demo2.html" class="demo-frame" style="display:inline-block;"></iframe>
 
 <div class="clear"></div>
 

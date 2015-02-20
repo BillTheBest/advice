@@ -3,8 +3,12 @@
 module.exports = function(grunt) {
     var port = '9000';
     var connect = require('./node_modules/grunt-contrib-connect/tasks/connect');
+    // File paths for the docs pages. Generally should be kept like this
+    var docFilePaths = ['index.md', 'docs/*'];
+
+
+    /*** File paths for your source files **/
     var sourceFilePaths = ['advice.js'];
-    var docFilePaths = ['index.md', 'examples/example1.md','examples/example2.md','examples/example3.md'];
 
     grunt.initConfig({
 
@@ -54,8 +58,8 @@ module.exports = function(grunt) {
                     'git push github gh-pages'
                 ]
             },
-            "movemaindocs": {
-                command: "mv maindocs/* ."
+            "movedocs": {
+                command: "mv doc/* ."
             },
             "renamemain": {
                 command: "cp index.md.html index.html"
@@ -66,24 +70,19 @@ module.exports = function(grunt) {
                 "!doc",
                 "!node_modules",
                 "!bower_components",
-                "!demos",
-                "!maindocs"].concat(sourceFilePaths.map(function(val) {
+                "!resources"].concat(sourceFilePaths.map(function(val) {
                     return '!' + val;
                 }))
         },
         docker: {
             options: {
-                css: ['docs-style.css']
+                css: ['resources/docs-style.css']
                 // These options are applied to all tasks
             },
             docs: {
                 // Specify `src` and `dest` directly on the task object
-                src: sourceFilePaths,
-                dest: 'doc'
-            },
-            maindocs: {
-                src: docFilePaths,
-                dest: 'maindocs',
+                src: sourceFilePaths.concat(docFilePaths),
+                dest: 'doc',
                 options: {
                     sidebarState: true
                 }
@@ -110,14 +109,19 @@ module.exports = function(grunt) {
     // Creates the `server` task
     grunt.registerTask('docs', [
         'shell:install-deps',
-        'shell:github-pages-delete',
-        'shell:github-pages-checkout',
-        'docker:docs',
-        'docker:maindocs',
-        'clean:rest',
-        'shell:movemaindocs',
-        'shell:renamemain',
-        'shell:github-pages-add',
-        'shell:github-pages-commit'
+        'docker:docs'
     ]);
+
+    grunt.registerTask('publishDocs', function() {
+        grunt.task.run([
+            'shell:github-pages-delete',
+            'shell:github-pages-checkout',
+            'clean:rest',
+            'shell:movedocs',
+            'shell:renamemain',
+            'shell:github-pages-add',
+            'shell:github-pages-commit'
+        ]);
+    });
+
 };

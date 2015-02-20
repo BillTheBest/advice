@@ -7,7 +7,7 @@ Advice makes it possible to to encapsulate behaviors on objects in the form of f
 
 ## Source ##
 
-Read the annotated source <a href="doc/advice.js.html" target="_blank">here</a>
+Read the annotated source <a href="advice.js.html" target="_blank">here</a>
 
 
 <div class="clear"></div>
@@ -40,9 +40,9 @@ Advice.addAdvice(recipientOfAdvice);
 <div class="clear"></div>
 
 ## Examples ##
-<a href="examples/example1.md.html">Simple Example With an "After"</a>
+<a href="docs/example1.md.html">Simple Example With an "After"</a>
 <div class="clear"></div>
-<a href="examples/example2.md.html">Example with a Backbone application</a>
+<a href="docs/example2.md.html">Example with a Backbone application</a>
 <div class="clear"></div>
-<a href="examples/example3.md.html">Another Backbone Example</a>
+<a href="docs/example3.md.html">Another Backbone Example</a>
 <div class="clear"></div>
