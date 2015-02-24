@@ -63,7 +63,9 @@ body .highlight {
     background: #3B484D;
 }
 .code pre {
-    line-height: 155%;
+    -webkit-font-smoothing: antialiased;
+    font-weight: bold !important;
+    line-height: 185%;
 }
 .code {
     font-size: 13px;
