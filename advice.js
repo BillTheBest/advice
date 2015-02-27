@@ -250,54 +250,57 @@
          * @returns {undefined}
          */
         addAdvice: function(obj) {
-            // adds before, after and around
-            ['before', 'after', 'around'].forEach(function(m) {
-                obj[m] = function(method, fn) {
+            var addApi = function() {
+                // adds before, after and around
+                ['before', 'after', 'around'].forEach(function(m) {
+                    obj[m] = function(method, fn) {
 
-                    // if an object is passed in then split that in to individual calls
-                    if (typeof method == 'object') {
-                        _.each(_.keys(method), function(key) {
-                            this[m](key, method[key]);
-                        }, this);
-                        return this;
-                    }
-
-                    // functions should go on a prototype if a constructor passed in
-                    var base = this;
-                    if (typeof base == 'function')
-                        base = this.prototype;
-
-                    // find original function in the prototype chain
-                    var orig = Advice.findVal(base, method);
-
-                    // use an identity function if none found
-                    if (typeof orig != 'function') {
-                        if (m != 'around') {
-                            base[method] = fn;
-                            return this
+                        // if an object is passed in then split that in to individual calls
+                        if (typeof method == 'object') {
+                            _.each(_.keys(method), function(key) {
+                                this[m](key, method[key]);
+                            }, this);
+                            return this;
                         }
-                        orig = _.identity;
-                    }
-                    base[method] = Advice[m](orig, fn);
 
-                    // chaining
-                    return this;
+                        // functions should go on a prototype if a constructor passed in
+                        var base = this;
+                        if (typeof base == 'function')
+                            base = this.prototype;
+
+                        // find original function in the prototype chain
+                        var orig = Advice.findVal(base, method);
+
+                        // use an identity function if none found
+                        if (typeof orig != 'function') {
+                            if (m != 'around') {
+                                base[method] = fn;
+                                return this
+                            }
+                            orig = _.identity;
+                        }
+                        base[method] = Advice[m](orig, fn);
+
+                        // chaining
+                        return this;
+                    };
+                });
+
+                var callWithThis = function(fn) {
+                    return fn.apply(this, [this].concat(_.toArray(arguments).slice(1)));
                 };
-            });
 
-            var callWithThis = function(fn) {
-                return fn.apply(this, [this].concat(_.toArray(arguments).slice(1)));
-            };
-
-            // add in other functions
-            obj.addMixin = addMixin;
-            obj.mixin = mixInto;
-            obj.hasMixin = obj.prototype.hasMixin = hasMixin;
-            obj.addToObj = _.partial(callWithThis, Advice.addToObj);
-            obj.setDefaults = _.partial(callWithThis, Advice.setDefaults);
-            obj.findVal = _.partial(callWithThis, Advice.findVal);
-            obj.clobber = _.partial(callWithThis, Advice.clobber);
-
+                // add in other functions
+                obj.addMixin = addMixin;
+                obj.mixin = mixInto;
+                obj.hasMixin = obj.prototype.hasMixin = hasMixin;
+                obj.addToObj = _.partial(callWithThis, Advice.addToObj);
+                obj.setDefaults = _.partial(callWithThis, Advice.setDefaults);
+                obj.findVal = _.partial(callWithThis, Advice.findVal);
+                obj.clobber = _.partial(callWithThis, Advice.clobber);
+            }
+            addApi(obj);
+            addApi(obj.prototype);
         }
     };
     return Advice;

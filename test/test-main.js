@@ -37,7 +37,8 @@ function startTests() {
     // and calling run
     } else {
         var allTestFiles = [
-          'test/core-test'
+          'test/core-test',
+          'test/backbone'
         ];
         require(['mocha'], function(mocha) {
             mocha.setup('bdd');
@@ -62,13 +63,17 @@ require.config({
         sinonChai: 'bower_components/sinon-chai/lib/sinon-chai',
         sinon: 'bower_components/sinonjs/sinon',
         "lodash": 'bower_components/lodash/dist/lodash',
-        "underscore": 'bower_components/lodash/dist/lodash',
+        "underscore": 'bower_components/underscore/underscore',
         "mutation": 'bower_components/mutation/mutation',
         "lodash.mutation": 'bower_components/mutation/lodash.mutation',
     },
     shim: {
         'underscore': {
             exports: '_'
+        },
+        backbone: {
+            deps: ['jquery', 'underscore'],
+            exports: 'Backbone'
         },
         mocha: {
             exports: "mocha",
@@ -88,5 +93,5 @@ require.config({
     // If browser does not capture in given timeout [ms], kill it
     captureTimeout: 60000,
 
-    waitSeconds: 60
+    waitSeconds: 5
 });

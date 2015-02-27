@@ -1,5 +1,5 @@
 console.log('describing tests');
-define(['chai', 'advice'], function(chai, Advice, Backbone) {
+define(['chai', 'advice', 'backbone'], function(chai, Advice, Backbone) {
 
     console.log('actually describing tests');
 
@@ -8,6 +8,7 @@ define(['chai', 'advice'], function(chai, Advice, Backbone) {
 
     describe('advice', function () {
 
+        Advice.addAdvice(Backbone.View);
         describe('inherit mixin through extend', function () {
             var mixin = function mixin() {
             };
