@@ -4,7 +4,7 @@
 <div class="left">
 	Here's the output of the code example below
 </div>
-<iframe src="../resources/demos/demo1.html" class="demo-frame" style="display:inline-block;"></iframe>
+<iframe src="../resources/demos/demo1.html" class="demo-frame" style="display:inline-block; width: 400px; height: 400px;"></iframe>
 
 <div class="clear"></div>
 
