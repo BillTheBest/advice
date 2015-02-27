@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>basic-example.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="../doc-style.css" />
+  <script src="../doc-filelist.js"></script>
+  <script>
+    var relativeDir = "../", thisFile = "docs\\basic-example.md", defaultSidebar = true;
+  </script>
+  <script src="../doc-script.js"></script>
+  <link rel="stylesheet" href="../docs-style.css" />
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="docs markdown">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<h1 id="demo">Demo</h1>
+<div class="clear"></div>
+<div class="left">
+    Here&#39;s the output of the code example below
+</div>
+<iframe src="../resources/demos/demo1.html" class="demo-frame" style="display:inline-block;"></iframe>
+
+<div class="clear"></div>
+
+<h1 id="code">Code</h1>
+<div class="clear"></div>
+
+<p>We hook into the methods of the Date object and call our custom methods before and after <code>setSeconds</code> is called.  This allows the ability to add functionality on any existing methods.</p>
+<p>*Obviously you should never apply advice to a Primitive, but you get the idea</p>
+<div class="left">
+
+Add advice to the Date object, define our advice, running before and after <code>setSeconds</code> is called, then create a new date and call the <code>setSeconds</code> method
+
+</div>
+
+
+<div class="highlight"><pre><code>  <span class="nx">Advice</span><span class="p">.</span><span class="nx">addAdvice</span><span class="p">(</span><span class="nb">Date</span><span class="p">);</span>
+
+  <span class="nb">Date</span><span class="p">.</span><span class="nx">before</span><span class="p">({</span>
+      <span class="nx">setSeconds</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span>
+          <span class="nx">log</span><span class="p">(</span><span class="s1">&#39;setSeconds() will be called, value will be set to &#39;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">);</span>
+      <span class="p">}</span>
+  <span class="p">}).</span><span class="nx">after</span><span class="p">({</span>
+      <span class="nx">setSeconds</span><span class="o">:</span><span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">){</span>
+          <span class="nx">log</span><span class="p">(</span><span class="s1">&#39;setSeconds() was called, value was set to &#39;</span> <span class="o">+</span> <span class="nx">val</span><span class="p">);</span>
+      <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="kd">var</span> <span class="nx">s</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">();</span>
+  <span class="nx">s</span><span class="p">.</span><span class="nx">setSeconds</span><span class="p">(</span><span class="mi">3</span><span class="p">);</span>
+</code></pre></div>
+
+
+<div class="clear"></div>
+
+<p>As you see in the output, our methods are called before and after the <code>setSeconds</code> method.</p>
+<hr>
+<h3 id="now-on-to-a-more-realistic-example-">Now, on to a more realistic example:</h3>
+<div class="left">
+Define the constructor and prototype for a base Animal class
+</div>
+
+
+<div class="highlight"><pre><code>  <span class="kd">var</span> <span class="nx">Animal</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+      <span class="k">this</span><span class="p">.</span><span class="nx">initialize</span><span class="p">();</span>
+  <span class="p">};</span>
+
+  <span class="nx">Animal</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="p">{</span>
+      <span class="nx">type</span><span class="o">:</span><span class="nx">mammal</span><span class="p">,</span>
+      <span class="nx">initialize</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
+          <span class="nx">log</span><span class="p">(</span><span class="s1">&#39;A &#39;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s1">&#39; has been brought into this world.&#39;</span><span class="p">);</span>
+      <span class="p">},</span>
+      <span class="nx">speak</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
+          <span class="nx">log</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">+</span> <span class="s1">&#39; has something to say.&#39;</span><span class="p">);</span>
+      <span class="p">}</span>
+  <span class="p">};</span>
+</code></pre></div>
+
+
+<p><div class="clear"></div></p>
+<p><div class="left">
+Add advice to the base Animal class, instantiate and call speak()
+</div></p>
+
+<div class="highlight"><pre><code>    <span class="nx">Advice</span><span class="p">.</span><span class="nx">addAdvice</span><span class="p">(</span><span class="nx">Animal</span><span class="p">);</span>
+
+    <span class="kd">var</span> <span class="nx">animal</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Animal</span><span class="p">();</span><span class="c1">//console: A mammal has been brought into this world.</span>
+    <span class="nx">animal</span><span class="p">.</span><span class="nx">speak</span><span class="p">();</span><span class="c1">//console: mammal has something to say.</span>
+</code></pre></div>
+
+
+<p><div class="clear"></div></p>
+<p><div class="left">
+Now create a Cat class that is a subclass of Animal and apply some Advice methods:
+</div></p>
+
+<div class="highlight"><pre><code>    <span class="kd">var</span> <span class="nx">Cat</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">Animal</span><span class="p">.</span><span class="nx">apply</span><span class="p">(</span><span class="k">this</span><span class="p">,</span><span class="nx">arguments</span><span class="p">);</span>
+    <span class="p">};</span>
+
+    <span class="nx">Cat</span><span class="p">.</span><span class="nx">prototype</span> <span class="o">=</span> <span class="nx">_</span><span class="p">.</span><span class="nx">create</span><span class="p">(</span><span class="nx">Animal</span><span class="p">,{</span>
+        <span class="nx">constructor</span><span class="o">:</span><span class="nx">Cat</span><span class="p">,</span>
+        <span class="nx">meow</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="nx">log</span><span class="p">(</span><span class="nx">meow</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}).</span><span class="nx">before</span><span class="p">({</span>
+        <span class="nx">initialize</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">type</span> <span class="o">=</span> <span class="nx">cat</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}).</span><span class="nx">clobber</span><span class="p">({</span>
+        <span class="nx">speak</span><span class="o">:</span><span class="kd">function</span><span class="p">(){</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">meow</span><span class="p">();</span>
+        <span class="p">}</span>
+    <span class="p">});</span>
+</code></pre></div>
+
+
+<p><div class="clear"></div></p>
+<p><div class="left">
+Instantiating the Cat class will call initialize before it&#39;s super and change the type, modifying the initialize log method
+</div></p>
+
+<div class="highlight"><pre><code>   <span class="kd">var</span> <span class="nx">cat</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Cat</span><span class="p">();</span> <span class="c1">//console: A cat has been brought into this world</span>
+</code></pre></div>
+
+
+<p><div class="clear"></div></p>
+<p><div class="left">
+Calling the speak method will use the clobbered speak method on Cat and never call the super speak method. Cat.speak also calls an local method, meow.
+</div></p>
+
+<div class="highlight"><pre><code>  <span class="nx">cat</span><span class="p">.</span><span class="nx">speak</span><span class="p">();</span> <span class="c1">//console: meow</span>
+</code></pre></div>
+
+
+</div>
+  </div>
+</body>
+</html>

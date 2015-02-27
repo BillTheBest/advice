@@ -1,9 +1,11 @@
 <div class="project-header">
-<div class="project-name">Advice</div>
-<div class="intro">
-<i>Based on the Advice <a href="https://github.com/twitter/flight/blob/master/lib/advice.js" target="_blank">functional mixin library</a> by <a href="https://twitter.com/angustweets" target="_blank">Angus Croll</a>.</i>
-Advice makes it possible to to encapsulate behaviors on objects in the form of functional 'mixins' giving us composability and code reuse.
-</div></div>
+    <div class="project-name">Advice</div>
+    <div class="intro">
+        <i>Based on the Advice <a href="https://github.com/twitter/flight/blob/master/lib/advice.js" target="_blank">functional mixin library</a>
+        by <a href="https://twitter.com/angustweets" target="_blank">Angus Croll</a>.</i>
+        Advice makes it possible to to encapsulate behaviors on objects in the form of functional 'mixins' giving us composability and code reuse.
+    </div>
+</div>
 
 ## Source ##
 
@@ -12,6 +14,36 @@ Read the annotated source <a href="advice.js.html" target="_blank">here</a>
 
 <div class="clear"></div>
 <div class="spacer"></div>
+
+## Overview ##
+
+Classical inheritance starts to become complicated when creating complex components, take this for example:
+
+```
+               ______BaseList________
+              |          |           |
+      GroupedList    ImageList    CarouselList
+          |                |
+    NestedItemList     CarouselImageList
+
+```
+
+This structure is rigid and highly dependent on parent logic. If you wanted to have a GroupedImageList (GroupedList + ImageList) you would have to re-arrange the hierarchy or duplicate code.  The same holds for the CarouselImageList, carousel functionality already exists with CarouselList, so either you duplicate that code or create a subclass of CarouselList with images.
+
+What Advice.js does is breaks apart the functionality for each subclass and shares the functions via mixins. It also exposes all component methods and properties to add functionality. So the above structure would be represented as:
+
+```
+                _______________________ BaseList_________________________
+               |          |             |                  |             |
+      GroupedList         |         ImageList              |         CarouselList
+(BaseList + groupMethods) |  (BaseList + imageMethods)     |    (BaseList + carouselMethods)
+                          |                                |
+                NestedItemList                         CarouselImageList
+ (BaseList + groupMethods + nestedMethods)     (BaseList + carouselMethods + imageMethods)
+
+```
+
+With Advice, adding grouped, nested, carousel or image logic to any other list is as simple as applying the methods with mixins. Code is not duplicated and only affects the scope to which its created.
 
 ## API ##
 
@@ -40,9 +72,9 @@ Advice.addAdvice(recipientOfAdvice);
 <div class="clear"></div>
 
 ## Examples ##
-<a href="docs/example1.md.html">Simple Example With an "After"</a>
+<a href="docs/basic.md.html">Basic example</a>
 <div class="clear"></div>
-<a href="docs/example2.md.html">Example with a Backbone application</a>
+<a href="docs/simple-backbone.md.html">Simple example with a Backbone app</a>
 <div class="clear"></div>
-<a href="docs/example3.md.html">Another Backbone Example</a>
+<a href="docs/complex-backbone.md.html">Complex example with a Backbone app</a>
 <div class="clear"></div>

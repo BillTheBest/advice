@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>example2.md</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <link rel="stylesheet" media="all" href="doc-style.css" />
+  <script src="doc-filelist.js"></script>
+  <script>
+    var relativeDir = "", thisFile = "C:\\Users\\Dan\\workspace\\advice\\\\example2.md", defaultSidebar = true;
+  </script>
+  <script src="doc-script.js"></script>
+  <link rel="stylesheet" href="docs-style.css" />
+</head>
+<body>
+  <div id="sidebar_wrapper">
+    <div id="sidebar_switch">
+      <span class="tree">Files</span>
+      <span class="headings">Headings</span>
+    </div>
+    <div id="tree"></div>
+    <div id="headings">
+    </div>
+  </div>
+  <div id="sidebar-toggle"></div>
+  <div id="container"><div class="docs markdown">
+<div class="pilwrap">
+  <a class="pilcrow" href="#section-1" id="section-1">&#182;</a>
+</div>
+<h1 id="demo">Demo</h1>
+<div class="clear"></div>
+<div class="left">
+    In the demo, the first button has both the clicking and logging functionality.
+    Whereas the second button has only the clicking functionality.
+    In this way, we can use mixins to selectively add functionality.
+</div>
+<iframe src="../resources/demos/demo2.html" class="demo-frame" style="display:inline-block;"></iframe>
+
+<div class="clear"></div>
+
+<h1 id="code">Code</h1>
+<div class="clear"></div>
+
+<p>A simple example of using Advice on a constructor might be adding logging functionality to a Backbone view.</p>
+<p>Lets say we have 2 different button classes used for buttons in your application. We can then add on functionality selectively to them using mixins.</p>
+<div class="left">
+Add advice to the views in our framework
+</div>
+
+
+<div class="highlight"><pre><code>    <span class="nx">Advice</span><span class="p">.</span><span class="nx">addAdvice</span><span class="p">(</span><span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">);</span>
+</code></pre></div>
+
+
+<div class="left">
+Define our click mixin
+</div>
+
+
+<div class="highlight"><pre><code>  <span class="kd">var</span> <span class="nx">clickMixin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+
+        <span class="k">this</span><span class="p">.</span><span class="nx">addToObj</span><span class="p">({</span>
+            <span class="nx">events</span><span class="o">:</span> <span class="p">{</span>
+                <span class="nx">click</span><span class="o">:</span> <span class="nx">clickHandler</span>
+            <span class="p">}</span>
+        <span class="p">});</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">({</span>
+            <span class="nx">clickHandler</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39; was clicked&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+    <span class="p">};</span>
+</code></pre></div>
+
+
+<div class="clear"></div>
+<div class="left">
+Define our logging mixin
+</div>
+
+
+<div class="highlight"><pre><code> <span class="kd">var</span> <span class="nx">loggingMixin</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="nx">after</span><span class="p">({</span>
+            <span class="nx">clickHandler</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+                <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">+</span> <span class="s1">&#39; was logged&#39;</span><span class="p">);</span>
+            <span class="p">}</span>
+        <span class="p">})</span>
+    <span class="p">};</span>
+</code></pre></div>
+
+
+<div class="clear"></div>
+
+<div class="left">
+Define the constructor for our first button type
+</div>
+
+
+<div class="highlight"><pre><code>  <span class="kd">var</span> <span class="nx">Buttons1</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+        <span class="nx">tagName</span><span class="o">:</span> <span class="s1">&#39;button&#39;</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Button 1&#39;</span><span class="p">,</span>
+        <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+        <span class="p">.</span><span class="nx">mixin</span><span class="p">([</span><span class="nx">clickMixin</span><span class="p">,</span> <span class="nx">loggingMixin</span><span class="p">]);</span>
+</code></pre></div>
+
+
+<p><div class="clear"></div></p>
+<p><div class="left">
+Define the constructor for our second button type
+</div></p>
+
+<div class="highlight"><pre><code><span class="kd">var</span> <span class="nx">Buttons2</span> <span class="o">=</span> <span class="nx">Backbone</span><span class="p">.</span><span class="nx">View</span><span class="p">.</span><span class="nx">extend</span><span class="p">({</span>
+        <span class="nx">tagName</span><span class="o">:</span> <span class="s1">&#39;button&#39;</span><span class="p">,</span>
+        <span class="nx">template</span><span class="o">:</span> <span class="s1">&#39;Button 2&#39;</span><span class="p">,</span>
+        <span class="nx">name</span><span class="o">:</span> <span class="s1">&#39;Button 2&#39;</span><span class="p">,</span>
+        <span class="nx">render</span><span class="o">:</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">this</span><span class="p">.</span><span class="nx">$el</span><span class="p">.</span><span class="nx">html</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">name</span><span class="p">);</span>
+            <span class="k">return</span> <span class="k">this</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+        <span class="p">.</span><span class="nx">mixin</span><span class="p">(</span><span class="nx">clickMixin</span><span class="p">);</span>
+</code></pre></div>
+
+
+<p><div class="clear"></div></p>
+<p><div class="left">
+Instantiate our buttons and add them to the page
+</div></p>
+
+<div class="highlight"><pre><code>    <span class="kd">var</span> <span class="nx">btn1</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Buttons1</span><span class="p">();</span>
+    <span class="kd">var</span> <span class="nx">btn2</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Buttons2</span><span class="p">();</span>
+
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">btn1</span><span class="p">.</span><span class="nx">render</span><span class="p">().</span><span class="nx">el</span><span class="p">);</span>
+    <span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">body</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span><span class="nx">btn2</span><span class="p">.</span><span class="nx">render</span><span class="p">().</span><span class="nx">el</span><span class="p">);</span>
+</code></pre></div>
+
+
+</div>
+  </div>
+</body>
+</html>
