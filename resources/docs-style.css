@@ -61,6 +61,7 @@ body .highlight {
 }
 .demo-frame {
     background: #3B484D;
+    width: calc(100% - 35% - 110px);
 }
 .code pre {
     -webkit-font-smoothing: antialiased;
