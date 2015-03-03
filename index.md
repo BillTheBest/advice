@@ -1,9 +1,9 @@
 <div class="project-header">
     <div class="project-name">Advice</div>
     <div class="intro">
-        <i>Based on the Advice <a href="https://github.com/twitter/flight/blob/master/lib/advice.js" target="_blank">functional mixin library</a>
-        by <a href="https://twitter.com/angustweets" target="_blank">Angus Croll</a>.</i>
         Advice makes it possible to to encapsulate behaviors on objects in the form of functional 'mixins' giving us composability and code reuse.
+        <i>It is based on the Advice <a href="https://github.com/twitter/flight/blob/master/lib/advice.js" target="_blank">functional mixin library</a>
+                    by <a href="https://twitter.com/angustweets" target="_blank">Angus Croll</a>.</i>
     </div>
 </div>
 
@@ -28,9 +28,10 @@ Classical inheritance starts to become complicated when creating complex compone
 
 ```
 
-This structure is rigid and highly dependent on parent logic. If you wanted to have a GroupedImageList (GroupedList + ImageList) you would have to re-arrange the hierarchy or duplicate code.  The same holds for the CarouselImageList, carousel functionality already exists with CarouselList, so either you duplicate that code or create a subclass of CarouselList with images.
+This structure is rigid and highly dependent on parent logic. If you wanted to have a GroupedImageList (GroupedList + ImageList) you would have to re-arrange the hierarchy or duplicate code.  The same problem exists for the CarouselImageList, which must duplicate carousel functionality which in this structure could potentially be
+a child of either ImageList or CarouselImageList, both choices resulting in code duplication.
 
-What Advice.js does is breaks apart the functionality for each subclass and shares the functions via mixins. It also exposes all component methods and properties to add functionality. So the above structure would be represented as:
+Advice enables better separation of inherited functionality by enabling the extraction of shared code and incorporation via mixins instead of through inheritance. Using Advice, the previous component structure can be restructured as:
 
 ```
                 _______________________ BaseList_________________________
@@ -43,7 +44,7 @@ What Advice.js does is breaks apart the functionality for each subclass and shar
 
 ```
 
-With Advice, adding grouped, nested, carousel or image logic to any other list is as simple as applying the methods with mixins. Code is not duplicated and only affects the scope to which its created.
+With Advice, adding grouped, nested, carousel or image logic to any other list is as simple as applying the methods with mixins. Code is not duplicated and only affects the scope to which it is added.
 
 ## API ##
 
@@ -51,9 +52,9 @@ Here's a list of the available advice API methods that are added onto an object 
 
 | Type      |  Behavior  |
 | ------------ | ------------------------------------------------------------------------------------------- |
-| before    | Adds on the supplied method to be called before the original method(s) run |
-| after       |  Adds on the supplied method to be called after the original method(s) have run |
-| clobber   |  Overwrites the original properties of an object |
+| before    | Adds the supplied method to be called before the original method(s) run |
+| after       |  Adds the supplied method to be called after the original method(s) have run |
+| clobber   |  Overwrites the original properties/methods of an object |
 | around    |  Adds on the supplied method instead of the super method, but passes a reference to the original method as the first argument followed by the arguments the method was called with |
 | addToObj | Extends the keys of an object with the keys of the provided object |
 | setDefaults | Adds properties (methods, objects, etc) to the constructor if they don't already exist |
