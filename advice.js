@@ -12,10 +12,13 @@
  */
 (function(root, factory) {
     if (typeof define === 'function' && define.amd) {
-        define(['lodash.mutation'], function(_) {
+        define(['lodash'], function(_) {
             root.Advice = factory(root, _);
             return root.Advice;
         });
+    } else if (typeof exports !== 'undefined') {
+        var _ = require('lodash');
+        module.exports = factory(root, _);
     } else {
         root.Advice = factory(root, root._);
     }
@@ -206,7 +209,7 @@
             if (typeof extBase == 'function')
                 extBase = base.prototype;
             _.each(obj, function(val, key) {
-                extBase[key] = Mutation.extendWith(_.clone(Advice.findVal(extBase, key)) || {}, val);
+                extBase[key] = _.extend(_.clone(Advice.findVal(extBase, key)) || {}, val);
             });
             return base;
         },

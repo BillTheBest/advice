@@ -3,18 +3,48 @@
 module.exports = function(grunt) {
     var port = '9000';
     var connect = require('./node_modules/grunt-contrib-connect/tasks/connect');
-    // File paths for the docs pages. Generally should be kept like this
-    var docFilePaths = ['index.md', 'docs/*'];
-
 
     /*** File paths for your source files **/
     var sourceFilePaths = ['advice.js'];
 
+    /*** File paths for test**/
+    var mochaSource = ['test/**/*.test.js'];
+
+    /*** File paths for test**/
+    var documentationPaths = ['index.md', 'docs'];
+
     grunt.initConfig({
 
-        karma: {
+        mochaTest: {
             test: {
-                configFile: 'karma.conf.js'
+                options: {
+                    reporter: 'spec',
+                    require: [
+                        function(){
+                            require('blanket')({ pattern: "advice.js" });
+                        },
+                        //Globally include the chai expect module so each test doesn't
+                        //need to manually require it
+                        function(){
+                            var chai = require('chai');
+                            chai.should();
+                            global.assert = chai.assert;
+                            global.expect = chai.expect;
+                        }
+                    ]
+                },
+                src: mochaSource
+            },
+            coverage: {
+                options: {
+                    reporter: 'html-cov',
+                    // use the quiet flag to suppress the mocha console output
+                    quiet: true,
+                    // specify a destination file to capture the mocha
+                    // output (the quiet option does not suppress this)
+                    captureFile: 'bin/coverage/index.html'
+                },
+                src: mochaSource
             }
         },
 
@@ -34,12 +64,12 @@ module.exports = function(grunt) {
         open: {
             all: {
                 // Gets the port from the connect configuration
-                path: 'http://localhost:<%= connect.all.options.port%>/bin/'
+                path: 'http://localhost:<%= connect.all.options.port%>/bin/coverage/index.html'
             }
         },
         shell: {
             "install-deps": {
-                command: 'npm install && bower install'
+                command: 'npm install'
             },
             "github-pages-delete": {
                 command: 'hasPages=`git branch --list gh-pages`; if [ -n "$hasPages" ]; then git branch -D gh-pages; else echo boo; fi'
@@ -63,45 +93,39 @@ module.exports = function(grunt) {
             },
             "renamemain": {
                 command: "cp index.md.html index.html"
+            },
+            docker: {
+                command:'node ./node_modules/docker/docker --css resources/docs-style.css -o doc ' + documentationPaths.concat(sourceFilePaths).join(" ")
             }
         },
         clean: {
             rest: ["*",
                 "!doc",
                 "!node_modules",
-                "!bower_components",
                 "!resources"].concat(sourceFilePaths.map(function(val) {
                     return '!' + val;
                 }))
-        },
-        docker: {
-            options: {
-                css: ['resources/docs-style.css']
-                // These options are applied to all tasks
-            },
-            docs: {
-                // Specify `src` and `dest` directly on the task object
-                src: sourceFilePaths.concat(docFilePaths),
-                dest: 'doc',
-                options: {
-                    sidebarState: true
-                }
-            }
         }
     });
 
-    grunt.loadNpmTasks('grunt-karma');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-open');
-    grunt.loadNpmTasks('grunt-shell-spawn');
-    grunt.loadNpmTasks('grunt-docker');
+    grunt.loadNpmTasks("grunt-mocha-test");
+    grunt.loadNpmTasks('grunt-shell');
 
     // Creates the `server` task
     grunt.registerTask('default',[
-        // Open before connect because connect uses keepalive at the moment
-        // so anything after connect wouldn't run
-        'karma:test',
+        'test'
+    ]);
+
+    grunt.registerTask('test',[
+        'mochaTest:test'
+    ]);
+
+    grunt.registerTask('test:cov', [
+        'test',
+        'mochaTest:coverage',
         'open',
         'connect'
     ]);
@@ -109,7 +133,7 @@ module.exports = function(grunt) {
     // Creates the `server` task
     grunt.registerTask('docs', [
         'shell:install-deps',
-        'docker:docs'
+        'shell:docker'
     ]);
 
     grunt.registerTask('publishDocs', function() {
@@ -123,5 +147,4 @@ module.exports = function(grunt) {
             'shell:github-pages-commit'
         ]);
     });
-
 };
