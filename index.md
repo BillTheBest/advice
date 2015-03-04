@@ -16,8 +16,9 @@ Read the annotated source <a href="advice.js.html" target="_blank">here</a>
 <div class="spacer"></div>
 
 ## Overview ##
-
+<div class="left">
 Classical inheritance starts to become complicated when creating complex components, take this for example:
+</div>
 
 ```
                ______BaseList________
@@ -28,10 +29,14 @@ Classical inheritance starts to become complicated when creating complex compone
 
 ```
 
+<div class="clear"></div>
+
+<div class="left">
 This structure is rigid and highly dependent on parent logic. If you wanted to have a GroupedImageList (GroupedList + ImageList) you would have to re-arrange the hierarchy or duplicate code.  The same problem exists for the CarouselImageList, which must duplicate carousel functionality which in this structure could potentially be
 a child of either ImageList or CarouselImageList, both choices resulting in code duplication.
 
 Advice enables better separation of inherited functionality by enabling the extraction of shared code and incorporation via mixins instead of through inheritance. Using Advice, the previous component structure can be restructured as:
+</div>
 
 ```
                 _______________________ BaseList_________________________
@@ -43,6 +48,8 @@ Advice enables better separation of inherited functionality by enabling the extr
  (BaseList + groupMethods + nestedMethods)     (BaseList + carouselMethods + imageMethods)
 
 ```
+
+<div class="clear"></div>
 
 With Advice, adding grouped, nested, carousel or image logic to any other list is as simple as applying the methods with mixins. Code is not duplicated and only affects the scope to which it is added.
 

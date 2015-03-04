@@ -6,6 +6,25 @@ h1,h2,h3,h4,h5,h6 {
 #sidebar_wrapper {
     background: #FAFAFA;
 }
+#tree,
+#sidebar_switch,
+.sidebar #sidebar_wrapper {
+    width: 200px;
+}
+.sidebar #container,
+.sidebar #sidebar-toggle {
+    left: 200px;
+}
+#tree .file:hover {
+    background: #FFF;
+}
+#tree .file {
+    color: #252519;
+    font-size: 12px;
+    padding: 6px 15px;
+    font-weight: 100;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
 body {
     font-family: "open sans", "Helvetica";
     font-weight: 100;
@@ -244,3 +263,11 @@ body .highlight .vg { color: #d07000; font-weight: bold } /* Name.Variable.Globa
 body .highlight .vi { color: #4242f4
 } /* Name.Variable.Instance */
 body .highlight .il { color: #0000D0; font-weight: bold } /* Literal.Number.Integer.Long */
+
+
+@media (max-width: 1400px) {
+    .left {
+        float: none;
+        width: auto;
+    }
+}
