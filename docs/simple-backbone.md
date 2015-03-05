@@ -1,4 +1,6 @@
-# Demo
+# Backbone - Simple
+
+## Demo
 
 <div class="clear"></div>
 <div class="left">
@@ -10,7 +12,7 @@
 
 <div class="clear"></div>
 
-# Code
+## Code
 
 <div class="clear"></div>
 
