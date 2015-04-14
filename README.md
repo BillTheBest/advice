@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/dataminr/advice.svg?branch=master)](https://travis-ci.org/dataminr/advice)
 # Advice #
 
 Based on the Advice functional mixin library by Angus Croll. Adds functional mixins to an object.
