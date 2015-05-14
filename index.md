@@ -63,6 +63,18 @@ With Advice, adding grouped, nested, carousel or image logic to any other list i
 
 ## API ##
 
+Here's a list of the available advice API methods that are added onto an object after using **Advice.addAdvice(targetObject)**:
+
+| Type      |  Behavior  |
+| ------------ | ------------------------------------------------------------------------------------------- |
+| before    | Adds the supplied method to be called before the original method(s) run |
+| after       |  Adds the supplied method to be called after the original method(s) have run |
+| clobber   |  Overwrites the original properties/methods of an object |
+| around    |  Adds on the supplied method instead of the super method, but passes a reference to the original method as the first argument followed by the arguments the method was called with |
+| addToObj | Extends the keys of an object with the keys of the provided object |
+| setDefaults | Adds properties (methods, objects, etc) to the constructor if they don't already exist |
+| mixin | Pass an array of mixins that should be mixed in to the target object |
+
 ### addAdvice ###
 Add all listed methods to the provided object
 #### addAdvice(object) ####
@@ -288,6 +300,7 @@ After running this code, `myObject` will be:
 Utility function for finding a value in a prototype chain
 #### findVal(key) ####
 - `key` - [_String_] the name of the property to search for
+
 Example:
 ```
 var myObject = {
